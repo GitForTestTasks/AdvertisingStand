@@ -14,6 +14,9 @@ import javax.faces.context.Flash;
 import javax.faces.event.ExceptionQueuedEvent;
 import javax.faces.event.ExceptionQueuedEventContext;
 
+/**
+ * Global exception handler
+ */
 public class CustomExceptionHandler extends ExceptionHandlerWrapper {
     private ExceptionHandler wrapped;
     private static Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);
@@ -27,6 +30,10 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
         return wrapped;
     }
 
+    /**
+     * When exception is thrown this method handles it
+     * @throws FacesException exception
+     */
     @Override
     public void handle() throws FacesException {
         Iterator iterator = getUnhandledExceptionQueuedEvents().iterator();
@@ -35,7 +42,7 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
             ExceptionQueuedEvent event = (ExceptionQueuedEvent) iterator.next();
             ExceptionQueuedEventContext context = (ExceptionQueuedEventContext) event.getSource();
             Throwable throwable = context.getException();
-            logger.error(throwable.getMessage());
+            logger.error(throwable.getMessage(), throwable);
 
             FacesContext facesContext = FacesContext.getCurrentInstance();
 

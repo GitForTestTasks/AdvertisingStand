@@ -1,5 +1,6 @@
 package ru.andrei.advertisingstand.ws;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,7 +38,7 @@ import javax.xml.bind.annotation.XmlType;
     "quantitySum",
     "title"
 })
-public class StatisticsGoods {
+public class StatisticsGoods implements Serializable {
 
     protected Integer count;
     protected Long goodId;

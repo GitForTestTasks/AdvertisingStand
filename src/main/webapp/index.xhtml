@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:p="http://primefaces.org/ui">
 
 <h:head>
     <title>Advertising Stand</title>
@@ -8,6 +8,9 @@
     <h:outputStylesheet library="css" name="index.css"/>
 </h:head>
 <h:body>
+    <p:socket channel="/data">
+        <p:ajax event="message" update="@all" />
+    </p:socket>
     <h:outputScript name="jsf.js" library="javax.faces" target="body"/>
     <h1 class="text-center text-primary">Goods</h1>
     <div class="wraper-main-page">
@@ -26,19 +29,23 @@
             </tr>
             </thead>
             <tbody>
-            <ui:repeat value="#{goodStatistics.topTenGoods}" var="value">
-                <tr class="active">
-                    <td>
-                        <div class="text-center">${value.title}</div>
-                    </td>
-                    <td>
-                        <div class="text-center">${value.count}</div>
-                    </td>
-                    <td>
-                        <div class="text-center">${value.price}</div>
-                    </td>
-                </tr>
-            </ui:repeat>
+            <h:form id="form">
+                <p:poll interval="300"
+                        listener="#{goodStatistics.getTopTenGoods}" update="@all" />
+                <ui:repeat id="repeat" value="#{goodStatistics.topTenGoods}" var="value">
+                    <tr class="active">
+                        <td>
+                            <div class="text-center">${value.title}</div>
+                        </td>
+                        <td>
+                            <div class="text-center">${value.count}</div>
+                        </td>
+                        <td>
+                            <div class="text-center">${value.price}</div>
+                        </td>
+                    </tr>
+                </ui:repeat>
+            </h:form>
             </tbody>
         </table>
     </div>

@@ -6,6 +6,7 @@ import ru.andrei.advertisingstand.ws.StatisticsGoods;
 import ru.andrei.advertisingstand.ws.TopGoodsWs;
 import ru.andrei.advertisingstand.ws.TopGoodsWsService;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,17 @@ public class EJBWebServiceClient {
     private static Logger logger = LoggerFactory.getLogger(EJBWebServiceClient.class);
     private static List<StatisticsGoods> statisticsGoods = null;
 
+    @PostConstruct
+    private void init() {
+        forceUpdate();
+    }
+
     public EJBWebServiceClient() {
     }
 
+    /**
+     * Forces update from web-service
+     */
     public synchronized void forceUpdate() {
         TopGoodsWsService service = new TopGoodsWsService();
         TopGoodsWs pService = service.getTopGoodsWsPort();
@@ -31,10 +40,11 @@ public class EJBWebServiceClient {
         logger.info("Update is forced.");
     }
 
+    /**
+     * Returns top ten goods
+     * @return list of statistics DTO
+     */
     public List<StatisticsGoods> getStatisticsGoods() {
-
-        if(statisticsGoods == null)
-            forceUpdate();
 
         if(statisticsGoods == null)
             return new ArrayList<>();

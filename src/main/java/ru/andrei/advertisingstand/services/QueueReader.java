@@ -1,6 +1,8 @@
 package ru.andrei.advertisingstand.services;
 
 
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,11 +32,18 @@ public class QueueReader implements MessageListener {
     public QueueReader() {
     }
 
+    /**
+     * Async method is used to handles messages from MQ
+     * @param message MQ message
+     */
     @Override
     public void onMessage(Message message) {
         try {
-            if (message.getBody(String.class).equals("update"))
+            if (message.getBody(String.class).equals("update")) {
                 ejbWebServiceClient.forceUpdate();
+                EventBus eventBus = EventBusFactory.getDefault().eventBus();
+                eventBus.publish("/data", Boolean.TRUE);
+            }
         } catch (JMSException e) {
             logger.error(e.getMessage());
         }
