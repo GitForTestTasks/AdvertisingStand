@@ -19,7 +19,6 @@ import java.util.List;
 @Singleton
 public class EJBWebServiceClient {
 
-    private static Logger logger = LoggerFactory.getLogger(EJBWebServiceClient.class);
     private static List<StatisticsGoods> statisticsGoods = null;
 
     @PostConstruct
@@ -37,7 +36,6 @@ public class EJBWebServiceClient {
         TopGoodsWsService service = new TopGoodsWsService();
         TopGoodsWs pService = service.getTopGoodsWsPort();
         statisticsGoods = pService.getTopTenGoods();
-        logger.info("Update is forced.");
     }
 
     /**
